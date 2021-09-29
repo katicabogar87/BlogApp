@@ -5,9 +5,23 @@ USE blogDB;
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
-name VARCHAR(50) UNIQUE NOT NULL,
+login_name VARCHAR(50) UNIQUE NOT NULL,
+password VARCHAR(200),
+email VARCHAR(50) UNIQUE NOT NULL,
+name VARCHAR(50),
+
 role ENUM('admin', 'moderator', 'user')
 );
+
+DROP TABLE IF EXISTS template;
+CREATE TABLE template(
+id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
+name VARCHAR(50) UNIQUE NOT NULL,
+background_picture BLOB,
+font_color VARCHAR(50) UNIQUE NOT NULL,
+category ENUM( 'minimal','casual', 'playfull', 'chill')
+);
+-- véges számú létezik, feltölthető tesztadatokkal...
 
 DROP TABLE IF EXISTS blog;
 CREATE TABLE blog(
@@ -19,19 +33,15 @@ FOREIGN KEY(owner_id) REFERENCES user(id),
 FOREIGN KEY(template_id) REFERENCES template(id)
 );
 
-DROP TABLE IF EXISTS template;
-CREATE TABLE template(
-id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
-name VARCHAR(50) UNIQUE NOT NULL,
-background_picture BLOB,
-font_color VARCHAR(50) UNIQUE NOT NULL,
-category ENUM( 'minimal','casual', 'playfull', 'chill')
-);
+
+
+
 
 DROP TABLE IF EXISTS blog_post;
 CREATE TABLE blog_post(
 id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
-name VARCHAR(50) UNIQUE NOT NULL,
+title VARCHAR(50) UNIQUE NOT NULL,
+post_text VARCHAR(500),
 blog_id INT UNSIGNED NOT NULL, 
 FOREIGN KEY(blog_id) REFERENCES blog(id)
 );
