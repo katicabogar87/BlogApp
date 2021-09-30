@@ -19,7 +19,7 @@ id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
 name VARCHAR(50) UNIQUE NOT NULL,
 background_picture BLOB,
 font_color VARCHAR(50) UNIQUE NOT NULL,
-category ENUM( 'minimal','casual', 'playfull', 'chill')
+category ENUM( 'minimal','casual', 'playful', 'chill')
 );
 -- véges számú létezik, feltölthető tesztadatokkal...
 
