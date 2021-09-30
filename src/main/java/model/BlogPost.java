@@ -7,4 +7,5 @@ public class BlogPost {
     private String title;
     private String text;
     private List<Comment> comments;
+    private BlogPostStatus blogPostStatus;
 }
