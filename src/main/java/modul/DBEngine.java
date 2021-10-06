@@ -1,8 +1,13 @@
 package modul;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import model.Role;
+import model.User;
+
+import java.net.UnknownServiceException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -36,4 +41,41 @@ public class DBEngine {
             return null;
         }
     }
+
+    public List<User> listAllUsers() {
+        String query = "SELECT * FROM user";
+
+
+        List<User> usersInDB = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                // getXXX("column_name_in_DB")
+
+                long userId = resultSet.getLong("id");
+                String loginName = resultSet.getString("login_name");
+                String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
+                String name = resultSet.getString("name");
+                Role role = Role.valueOf(resultSet.getString("role"));
+                LocalDateTime regTime = resultSet.getTimestamp("reg_date").toLocalDateTime();
+
+
+
+                User user = new User(userId, loginName, password, email, name, role, regTime);
+
+                usersInDB.add(user);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("???");
+            e.printStackTrace();
+        }
+
+        return usersInDB;
+    }
+
 }
