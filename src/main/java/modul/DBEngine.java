@@ -53,7 +53,6 @@ public class DBEngine {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                // getXXX("column_name_in_DB")
 
                 long userId = resultSet.getLong("id");
                 String loginName = resultSet.getString("login_name");
@@ -62,10 +61,9 @@ public class DBEngine {
                 String name = resultSet.getString("name");
                 Role role = Role.valueOf(resultSet.getString("role"));
                 LocalDateTime regTime = resultSet.getTimestamp("reg_date").toLocalDateTime();
+                boolean isSuspended = resultSet.getBoolean("is_suspended");
 
-
-
-                User user = new User(userId, loginName, password, email, name, role, regTime);
+                User user = new User(userId, loginName, password, email, name, role, regTime, isSuspended);
 
                 usersInDB.add(user);
             }
@@ -74,7 +72,6 @@ public class DBEngine {
             System.out.println("???");
             e.printStackTrace();
         }
-
         return usersInDB;
     }
 

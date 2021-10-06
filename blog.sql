@@ -9,8 +9,9 @@ login_name VARCHAR(50) UNIQUE NOT NULL,
 password VARCHAR(200),
 email VARCHAR(50) UNIQUE NOT NULL,
 name VARCHAR(50),
-role ENUM('admin', 'moderator', 'user'),
-reg_date TIMESTAMP
+role ENUM('guest', 'admin', 'moderator', 'user'),
+reg_date TIMESTAMP,
+is_suspended BOOLEAN
 );
 
 DROP TABLE IF EXISTS template; 	-- az összes tulajdonságot tartalmazhatná egyetlen css-file
@@ -42,6 +43,7 @@ title VARCHAR(50) UNIQUE NOT NULL,
 post_text LONGTEXT,	-- lehetne elérési út is egy fájlnévhez: txt vagy html formátum
 status ENUM ('draft', 'posted', 'invisible'),
 pub_time TIMESTAMP,
+readed INT UNSIGNED,
 blog_id INT UNSIGNED NOT NULL, 
 FOREIGN KEY(blog_id) REFERENCES blog(id)
 );
