@@ -4,6 +4,5 @@ public enum Category {
 
     MINIMAL,
     CASUAL,
-    PLAYFUL,
-    CHILL
+    PLAYFUL
 }
