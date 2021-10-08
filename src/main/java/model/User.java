@@ -66,13 +66,29 @@ public class User extends GuestUser{
         return createdBlogPost;
     }
 
-    public void edtitOwnBlogpost(){}
+    public void editOwnBlogpost(){}
 
     public void editOwnComment(){}
 
     public void removeCommentOfOwnBlogPost(){}
 
-    public void writeComment(String text, BlogPost blogPost){}
+    public void writeComment(String text, BlogPost blogPost){
+        Comment createdComment = new Comment(text);
+        createdComment.setCommenter(this);
+        createdComment.setBlogPost(blogPost);
+        createdComment.setTimestamp(LocalDateTime.now());
+        createdComment.setPreceding(null);
+        createdComment.setVisible(true);
 
-    public void writeComment(String text, Comment comment){}
+
+    }
+
+    public void writeComment(String text, Comment preceding){
+        Comment createdComment = new Comment(text);
+        createdComment.setCommenter(this);
+        createdComment.setBlogPost(preceding.getBlogPost());
+        createdComment.setTimestamp(LocalDateTime.now());
+        createdComment.setPreceding(preceding);
+        createdComment.setVisible(true);
+    }
 }

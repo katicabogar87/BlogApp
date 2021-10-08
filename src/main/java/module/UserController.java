@@ -47,17 +47,17 @@ public class UserController {
                     case REG_USER -> {
                         User user = new User(userId, loginName, password, email, name, role, regTime, isSuspended);
                         usersInDB.add(user);
-                        user.setBlogs(blogController.findBlogsOfUser(user.getUserId()));
+                        user.setBlogs(blogController.findBlogsOfUser(user));
                     }
                     case MODERATOR -> {
                         Moderator moderator = new Moderator(userId, loginName, password, email, name, role, regTime, isSuspended);
                         usersInDB.add(moderator);
-                        moderator.setBlogs(blogController.findBlogsOfUser(moderator.getUserId()));
+                        moderator.setBlogs(blogController.findBlogsOfUser(moderator));
                     }
                     case ADMIN -> {
                         Admin admin = new Admin(userId, loginName, password, email, name, role, regTime, isSuspended);
                         usersInDB.add(admin);
-                        admin.setBlogs(blogController.findBlogsOfUser(admin.getUserId()));
+                        admin.setBlogs(blogController.findBlogsOfUser(admin));
                     }
                 }
             }
@@ -93,17 +93,17 @@ public class UserController {
                     }
                     case REG_USER -> {
                         User user = new User(userId, loginName, password, email, name, role, regTime, isSuspended);
-                        user.setBlogs(blogController.findBlogsOfUser(user.getUserId()));
+                        user.setBlogs(blogController.findBlogsOfUser(user));
                         return user;
                     }
                     case MODERATOR -> {
                         Moderator moderator = new Moderator(userId, loginName, password, email, name, role, regTime, isSuspended);
-                        moderator.setBlogs(blogController.findBlogsOfUser(moderator.getUserId()));
+                        moderator.setBlogs(blogController.findBlogsOfUser(moderator));
                         return moderator;
                     }
                     case ADMIN -> {
                         Admin admin = new Admin(userId, loginName, password, email, name, role, regTime, isSuspended);
-                        admin.setBlogs(blogController.findBlogsOfUser(admin.getUserId()));
+                        admin.setBlogs(blogController.findBlogsOfUser(admin));
                         return admin;
                     }
                 }

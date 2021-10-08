@@ -1,14 +1,9 @@
 package module;
 
 
-import model.Blog;
-import model.BlogPost;
-import model.BlogPostStatus;
-import model.Comment;
+import model.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +18,7 @@ public class CommentController {
 
     private DBConnector dbConnector = new DBConnector();
 
-    public List<Comment> findCommentsOfBlogPost(BlogPost blogPost){
+    public List<Comment> findCommentsOfBlogPost(BlogPost blogPost) {
         List<Comment> comments = new ArrayList<>();
 
         String query = "SELECT * FROM  comment  WHERE blog_post_id = ?";
@@ -43,12 +38,12 @@ public class CommentController {
                 LocalDateTime pubTime = resultSet.getTimestamp("pub_time").toLocalDateTime();
 
 
-
                 Comment comment = new Comment(id, commentText, isVisible, pubTime);
                 comment.setBlogPost(blogPost);
                 comment.setCommenter(userController.findUserById(authorId));
-                if(precedingId!=0){
-                comment.setPreceding(findCommentById(precedingId));}
+                if (precedingId != 0) {
+                    comment.setPreceding(findCommentById(precedingId));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,41 +54,72 @@ public class CommentController {
 
     private Comment findCommentById(long id) {
 
-               Comment comment = null;
+        Comment comment = null;
 
-                String query = "SELECT * FROM  comment  WHERE preceding_id = ?";
+        String query = "SELECT * FROM  comment  WHERE preceding_id = ?";
 
-                try {
-                    PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
-                    preparedStatement.setLong(1, id);
+        try {
+            PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
+            preparedStatement.setLong(1, id);
 
-                    ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                    while (resultSet.next()) {
-                        // id = resultSet.getLong("id");
-                        long authorId = resultSet.getLong("author_id");
-                        long blogPostID = resultSet.getLong("blog_post_id");
-                        long precedingId = resultSet.getLong("preceding_id");
-                        String commentText = resultSet.getString("comment_text");
-                        boolean isVisible = resultSet.getBoolean("is_visible");
-                        LocalDateTime pubTime = resultSet.getTimestamp("pub_time").toLocalDateTime();
-
-
-
-                        comment = new Comment(id, commentText, isVisible, pubTime);
-                        comment.setBlogPost(blogPostController.findBlogpostById(blogPostID));
-                        comment.setCommenter(userController.findUserById(authorId));
-                        comment.setPreceding(findCommentById(precedingId));
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                return comment;
+            while (resultSet.next()) {
+                // id = resultSet.getLong("id");
+                long authorId = resultSet.getLong("author_id");
+                long blogPostID = resultSet.getLong("blog_post_id");
+                long precedingId = resultSet.getLong("preceding_id");
+                String commentText = resultSet.getString("comment_text");
+                boolean isVisible = resultSet.getBoolean("is_visible");
+                LocalDateTime pubTime = resultSet.getTimestamp("pub_time").toLocalDateTime();
 
 
+                comment = new Comment(id, commentText, isVisible, pubTime);
+                comment.setBlogPost(blogPostController.findBlogpostById(blogPostID));
+                comment.setCommenter(userController.findUserById(authorId));
+                comment.setPreceding(findCommentById(precedingId));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return comment;
 
 
+    }
 
+    /**
+     * Add elements to database
+     */
+
+    public boolean addCommentToDB(BlogPost blogPost, User user, Comment comment) {
+
+        String query = "INSERT INTO comment (blog_post_id, author_id, preceding_id, comment_text, is_visible, pub_time) VALUES (?,?,?,?,?,?);";
+
+        try {
+            PreparedStatement ps = dbConnector.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            ps.setLong(1, blogPost.getBlogPostId());
+            ps.setLong(2, user.getUserId());
+            if (comment.getPreceding()==null){ps.setLong(3, 0);}
+            else {ps.setLong(3, comment.getPreceding().getCommentId());}
+            ps.setString(4, blogPost.getBlogPostStatus().toString());
+            ps.setBoolean(5, comment.isVisible());
+            ps.setTimestamp(6, Timestamp.valueOf(blogPost.getPubTime()));
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next())
+                comment.setCommentId(rs.getInt(1));
+
+            ps.close();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }

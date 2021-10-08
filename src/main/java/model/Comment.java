@@ -31,4 +31,8 @@ public class Comment {
         this.isVisible = isVisible;
         this.timestamp = timestamp;
     }
+
+    public Comment(String commentText) {
+        this.commentText = commentText;
+    }
 }

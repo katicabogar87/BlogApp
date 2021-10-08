@@ -4,10 +4,7 @@ import model.Blog;
 import model.BlogPost;
 import model.BlogPostStatus;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,22 +109,20 @@ public class BlogPostController {
     }
 
     /**
-     * Add elemnts to database*/
+     * Add elements to database*/
 
     public boolean addBlogPostToDB(BlogPost blogPost) {
 
-        String query = "INSERT INTO blog_post (blog_id, title, post_text, status) VALUES (?, ?, ?, ?);";
-       /* String sql = "INSERT INTO candidates(first_name,last_name,dob,phone,email) "
-                + "VALUES(?,?,?,?,?)";*/
-
+        String query = "INSERT INTO blog_post (blog_id, title, post_text, pub_time, status) VALUES (?,?,?,?,?);";
 
         try {
             PreparedStatement ps = dbConnector.getConnection().prepareStatement(query,  Statement.RETURN_GENERATED_KEYS );
-            //ps.setLong(1, blogPost.getId());  // AUTOINCREMENT!!!
+
             ps.setLong(1, blogPost.getBlog().getBlogId());
             ps.setString(2, blogPost.getBlogPostTitle());
             ps.setString(3, blogPost.getText());
-            ps.setString(4, blogPost.getBlogPostStatus().toString());
+            ps.setTimestamp(4, Timestamp.valueOf(blogPost.getPubTime()));
+            ps.setString(5, blogPost.getBlogPostStatus().toString());
 
             ps.executeUpdate();
 
