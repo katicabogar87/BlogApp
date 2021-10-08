@@ -13,9 +13,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages Queries related to User and derived Classes (Moderator, Admin)
+ * */
+
 public class UserController {
 
-    private DBEngine dbEngine = new DBEngine();
+    private DBConnector dbConnector = new DBConnector();
     private BlogController blogController = new BlogController();
 
     public List<User> listAllRegisteredUsers() {
@@ -23,7 +27,7 @@ public class UserController {
         List<User> usersInDB = new ArrayList<>();
 
         try {
-            Statement statement = dbEngine.getConnection().createStatement();
+            Statement statement = dbConnector.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -68,7 +72,7 @@ public class UserController {
         String query = "SELECT * FROM  user  WHERE id = ?";
 
         try {
-            PreparedStatement preparedStatement = dbEngine.getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();

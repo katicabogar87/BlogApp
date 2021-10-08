@@ -1,10 +1,10 @@
-import module.DBEngine;
+import module.DBConnector;
 
 public class Application {
     public static void main(String[] args) {
         System.out.println("run");
-        DBEngine dbEngine = new DBEngine();
-        System.out.println(dbEngine.isConnected());
+        DBConnector dbConnector = new DBConnector();
+        System.out.println(dbConnector.isConnected());
 
     }
 }

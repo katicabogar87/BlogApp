@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Connect to database*/
-public class DBEngine {
+ * Connects to database*/
+public class DBConnector {
     @Getter
     private Connection connection;
 
 
-    public DBEngine() {
-        connection = connect();
+    public DBConnector() {connection = connect();
     }
 
     public boolean isConnected() {
@@ -39,15 +38,5 @@ public class DBEngine {
             return null;
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 }

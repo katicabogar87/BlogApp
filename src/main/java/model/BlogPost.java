@@ -24,6 +24,17 @@ public class BlogPost {
     @Getter @Setter
     private List<Comment> comments;
 
+    public BlogPost() {
+    }
+
+    public BlogPost(String blogPostTitle, String text, BlogPostStatus blogPostStatus) {
+        this.blogPostTitle = blogPostTitle;
+        this.text = text;
+        this.blogPostStatus = blogPostStatus;
+    }
+
+
+
     public BlogPost(long blogPostId, String blogPostTitle, String text, BlogPostStatus blogPostStatus, LocalDateTime pub_time, int readed) {
         this.blogPostId = blogPostId;
         this.blogPostTitle = blogPostTitle;

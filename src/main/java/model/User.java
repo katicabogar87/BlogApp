@@ -42,9 +42,37 @@ public class User extends GuestUser{
         this.isSuspended = isSuspended;
     }
 
+    public BlogPost createBlogPost(int blogIndex, String blogPostTitle, String text, BlogPostStatus blogPostStatus ){
+
+        BlogPost createdBlogPost = new BlogPost();
+
+            try {
+               Blog blogToEdit = blogs.get(blogIndex);
+               createdBlogPost.setBlog(blogToEdit);
+               blogToEdit.getBlogPosts().add(createdBlogPost);
+
+            } catch (Exception e) {
+                System.out.println("No such blog");
+            }
+
+
+        createdBlogPost.setBlogPostTitle(blogPostTitle);
+        createdBlogPost.setText(text);
+        createdBlogPost.setBlogPostStatus(blogPostStatus);
+        createdBlogPost.setPubTime(LocalDateTime.now());
+
+        super.getUserInterface().getBlogPostController().addBlogPostToDB(createdBlogPost);
+
+        return createdBlogPost;
+    }
+
     public void edtitOwnBlogpost(){}
 
     public void editOwnComment(){}
 
     public void removeCommentOfOwnBlogPost(){}
+
+    public void writeComment(String text, BlogPost blogPost){}
+
+    public void writeComment(String text, Comment comment){}
 }

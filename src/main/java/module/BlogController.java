@@ -10,9 +10,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages Queries related to Blog Class (and also templates)
+ * */
+
 public class BlogController {
 
-    private DBEngine dbEngine = new DBEngine();
+    private DBConnector dbConnector = new DBConnector();
     private UserController userController = new UserController();
     private BlogPostController blogPostController = new BlogPostController();
 
@@ -21,7 +25,7 @@ public class BlogController {
         List<Blog> blogsInDB = new ArrayList<>();
 
         try {
-            Statement statement = dbEngine.getConnection().createStatement();
+            Statement statement = dbConnector.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -36,7 +40,7 @@ public class BlogController {
                 blogsInDB.add(blog);
 
                 blog.setBlogOwner(userController.findUserById(blogOwnerId));
-                blog.setBlogPosts(blogPostController.findBlogpostsOfBlog(blogId));
+                blog.setBlogPosts(blogPostController.findBlogpostsOfBlog(blog));
                 blog.setBlogTemplate(findTemplateById(templateId));
 
             }
@@ -47,14 +51,14 @@ public class BlogController {
         return blogsInDB;
     }
 
-    public List<Blog> findBlogsOfUser(long ownerId){
+    public List<Blog> findBlogsOfUser(User user){
         List<Blog> blogs = new ArrayList<>();
 
         String query = "SELECT * FROM  blog  WHERE owner_id = ?";
 
         try {
-            PreparedStatement preparedStatement = dbEngine.getConnection().prepareStatement(query);
-            preparedStatement.setLong(1, ownerId);
+            PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
+            preparedStatement.setLong(1, user.getUserId());
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -68,9 +72,9 @@ public class BlogController {
                 Blog blog = new Blog(blogId, blogTitle, creationTime);
                 blogs.add(blog);
 
-                blog.setBlogOwner(userController.findUserById(ownerId));
-                List<BlogPost> blogPosts; //blog.setBlogPosts(findBlogpostsOfBlog(blogId));
-                BlogTemplate blogTemplate; //blog.setBlogTemplate(findBlogTemplateById(templateId));
+                blog.setBlogOwner(user);
+                blog.setBlogPosts(blogPostController.findBlogpostsOfBlog(blog));
+                blog.setBlogTemplate(findTemplateById(templateId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +88,7 @@ public class BlogController {
            Blog blog = null;
 
             try {
-                PreparedStatement preparedStatement = dbEngine.getConnection().prepareStatement(query);
+                PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
                 preparedStatement.setLong(1, blogId);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -100,7 +104,7 @@ public class BlogController {
                     blog = new Blog(blogId, blogTitle, creationTime);
 
                     blog.setBlogOwner(userController.findUserById(blogOwnerId));
-                    blog.setBlogPosts(blogPostController.findBlogpostsOfBlog(blogId));
+                    blog.setBlogPosts(blogPostController.findBlogpostsOfBlog(blog));
                     blog.setBlogTemplate(findTemplateById(templtateId));
 
                 }
@@ -117,7 +121,7 @@ public class BlogController {
         List<BlogTemplate> templatesInDB = new ArrayList<>();
 
         try {
-            Statement statement = dbEngine.getConnection().createStatement();
+            Statement statement = dbConnector.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -142,7 +146,7 @@ public class BlogController {
         BlogTemplate blogTemplate = null;
 
         try {
-            PreparedStatement preparedStatement = dbEngine.getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
