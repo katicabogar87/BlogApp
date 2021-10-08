@@ -43,6 +43,7 @@ public class User extends GuestUser{
     }
 
     public BlogPost createBlogPost(int blogIndex, String blogPostTitle, String text, BlogPostStatus blogPostStatus ){
+        if (this.isSuspended) {return null;}
 
         BlogPost createdBlogPost = new BlogPost();
 
@@ -72,23 +73,32 @@ public class User extends GuestUser{
 
     public void removeCommentOfOwnBlogPost(){}
 
-    public void writeComment(String text, BlogPost blogPost){
+    public Comment writeComment(String text, BlogPost blogPost){
+        if (this.isSuspended) {return null;}
         Comment createdComment = new Comment(text);
         createdComment.setCommenter(this);
         createdComment.setBlogPost(blogPost);
         createdComment.setTimestamp(LocalDateTime.now());
         createdComment.setPreceding(null);
         createdComment.setVisible(true);
+        blogPost.getComments().add(createdComment);
 
-
+        return createdComment;
     }
 
-    public void writeComment(String text, Comment preceding){
-        Comment createdComment = new Comment(text);
-        createdComment.setCommenter(this);
-        createdComment.setBlogPost(preceding.getBlogPost());
-        createdComment.setTimestamp(LocalDateTime.now());
-        createdComment.setPreceding(preceding);
-        createdComment.setVisible(true);
-    }
+    public Comment writeComment(String text, Comment preceding) {
+        if (this.isSuspended) {return null;}
+            Comment createdComment = new Comment(text);
+            createdComment.setCommenter(this);
+            createdComment.setBlogPost(preceding.getBlogPost());
+            createdComment.setTimestamp(LocalDateTime.now());
+            createdComment.setPreceding(preceding);
+            createdComment.setVisible(true);
+            preceding.getBlogPost().getComments().add(createdComment);
+            preceding.getReplies().add(createdComment);
+
+            return createdComment;
+        }
+
+
 }
