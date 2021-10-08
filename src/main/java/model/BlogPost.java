@@ -43,4 +43,8 @@ public class BlogPost {
         this.pubTime = pub_time;
         this.readed = readed;
     }
+
+    public void incrementReaded (){
+        readed++;
+    }
 }

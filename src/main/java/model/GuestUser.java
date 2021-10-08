@@ -11,8 +11,14 @@ public class GuestUser {
     public GuestUser() {
     }
 
-    public Blog readBlog(Blog blog ){
+    public Blog readBlog(Blog blog){
 
         return userInterface.getBlogController().findBlogById(blog.getBlogId());
+    }
+    public BlogPost readBlogPost(BlogPost blogPost){
+        BlogPost blogPostToRead = userInterface.getBlogPostController().findBlogpostById(blogPost.getBlogPostId());
+        blogPostToRead.incrementReaded();
+
+        return blogPostToRead;
     }
 }

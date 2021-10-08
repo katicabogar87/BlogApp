@@ -14,7 +14,11 @@ public class Moderator extends User{
     }
 
 
-    public void moderateComment(){}
+    public void moderateComment(Comment meanComment){
+        meanComment.setVisible(false);
+
+        //update database
+    }
 
     public void moderateBlogPost(){}
 
