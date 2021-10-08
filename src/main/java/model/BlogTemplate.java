@@ -6,4 +6,10 @@ public class BlogTemplate {
     private String fontColor;
     private Category category;
 
+    public BlogTemplate(long templateId, String templateName, String fontColor, Category category) {
+        this.templateId = templateId;
+        this.templateName = templateName;
+        this.fontColor = fontColor;
+        this.category = category;
+    }
 }

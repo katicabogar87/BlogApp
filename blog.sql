@@ -27,7 +27,7 @@ category ENUM( 'minimal','casual', 'playful', 'chill')
 DROP TABLE IF EXISTS blog;
 CREATE TABLE blog(
 id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
-name VARCHAR(50) UNIQUE NOT NULL,
+title VARCHAR(50) UNIQUE NOT NULL,
 owner_id INT UNSIGNED NOT NULL,
 template_id INT UNSIGNED NOT NULL,
 creation_time TIMESTAMP,
