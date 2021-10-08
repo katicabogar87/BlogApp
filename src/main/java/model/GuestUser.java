@@ -10,12 +10,12 @@ public class GuestUser {
 
     public GuestUser() {}
 
-    public Blog readBlog(Blog blog){
-        return userInterface.getBlogController().findBlogById(blog.getBlogId());
+    public Blog readBlog(long blogId){
+        return userInterface.getBlogController().findBlogById(blogId);
     }
 
-    public BlogPost readBlogPost(BlogPost blogPost){
-        BlogPost blogPostToRead = userInterface.getBlogPostController().findBlogpostById(blogPost.getBlogPostId());
+    public BlogPost readBlogPost(long blogPostId){
+        BlogPost blogPostToRead = userInterface.getBlogPostController().findBlogpostById(blogPostId);
         blogPostToRead.incrementReaded();
 
         return blogPostToRead;
