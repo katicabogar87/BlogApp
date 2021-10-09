@@ -13,6 +13,7 @@ import java.util.List;
  * */
 public class BlogPostController {
     BlogController blogController = new BlogController();
+    CommentController commentController = new CommentController();
 
     private DBConnector dbConnector = new DBConnector();
 
@@ -37,6 +38,7 @@ public class BlogPostController {
                 BlogPost blogPost = new BlogPost(id, blogPostTitle, postText, status, pubTime, readed);
 
                 blogPost.setBlog(blogController.findBlogById(blogId));
+                blogPost.setComments(commentController.findCommentsOfBlogPost(blogPost));
                 blogpostsInDB.add(blogPost);
             }
         } catch (SQLException e) {
@@ -69,6 +71,7 @@ public class BlogPostController {
 
                 blogPost = new BlogPost(id, blogPostTitle, postText, status, pubTime, readed);
                 blogPost.setBlog(blogController.findBlogById(blogId));
+                blogPost.setComments(commentController.findCommentsOfBlogPost(blogPost));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,6 +103,7 @@ public class BlogPostController {
 
                 BlogPost blogPost = new BlogPost(id, blogPostTitle, postText, status, pubTime, readed);
                 blogPost.setBlog(blog);
+                blogPost.setComments(commentController.findCommentsOfBlogPost(blogPost));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -44,6 +44,7 @@ public class CommentController {
                 if (precedingId != 0) {
                     comment.setPreceding(findCommentById(precedingId));
                 }
+                comment.setReplies(findCommentsReplies(comment));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,7 +57,7 @@ public class CommentController {
 
         Comment comment = null;
 
-        String query = "SELECT * FROM  comment  WHERE preceding_id = ?";
+        String query = "SELECT * FROM  comment  WHERE id = ?";
 
         try {
             PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
@@ -78,14 +79,46 @@ public class CommentController {
                 comment.setBlogPost(blogPostController.findBlogpostById(blogPostID));
                 comment.setCommenter(userController.findUserById(authorId));
                 comment.setPreceding(findCommentById(precedingId));
+                comment.setReplies(findCommentsReplies(comment));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return comment;
+    }
+
+    private List<Comment> findCommentsReplies(Comment inputComment) {
+
+        List<Comment> replies = new ArrayList<>();
+
+        String query = "SELECT * FROM  comment  WHERE preceding_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query);
+            preparedStatement.setLong(1, inputComment.getCommentId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                long authorId = resultSet.getLong("author_id");
+                String commentText = resultSet.getString("comment_text");
+                boolean isVisible = resultSet.getBoolean("is_visible");
+                LocalDateTime pubTime = resultSet.getTimestamp("pub_time").toLocalDateTime();
 
 
+                Comment comment = new Comment(id, commentText, isVisible, pubTime);
+                comment.setBlogPost(inputComment.getBlogPost());
+                comment.setCommenter(userController.findUserById(authorId));
+                comment.setPreceding(inputComment);
+                comment.setReplies(findCommentsReplies(comment));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return replies;
     }
 
     /**
@@ -94,7 +127,8 @@ public class CommentController {
 
     public boolean addCommentToDB(BlogPost blogPost, User user, Comment comment) {
 
-        String query = "INSERT INTO comment (blog_post_id, author_id, preceding_id, comment_text, is_visible, pub_time) VALUES (?,?,?,?,?,?);";
+        String query = "INSERT INTO comment (blog_post_id, author_id, preceding_id, comment_text, is_visible, pub_time) " +
+                            "VALUES (?,?,?,?,?,?);";
 
         try {
             PreparedStatement ps = dbConnector.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -120,6 +154,5 @@ public class CommentController {
             e.printStackTrace();
             return false;
         }
-
     }
 }
