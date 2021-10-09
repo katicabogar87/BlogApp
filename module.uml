@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>module</OriginalElement>
+  <nodes>
+    <node x="-64.0" y="211.0">module.UserController</node>
+    <node x="317.0" y="26.0">module.DBConnector</node>
+    <node x="764.0" y="211.0">module.CommentController</node>
+    <node x="477.0" y="211.0">module.BlogPostController</node>
+    <node x="195.0" y="211.0">module.BlogController</node>
+    <node x="-465.0" y="127.0">module.UserInterface</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="330.5" y="372.5" />
+  <SelectedNodes>
+    <node>module.UserController</node>
+    <node>module.DBConnector</node>
+    <node>module.CommentController</node>
+    <node>module.BlogPostController</node>
+    <node>module.BlogController</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

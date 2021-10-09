@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>model</OriginalElement>
+  <nodes>
+    <node x="-196.0" y="-50.0">model.Category</node>
+    <node x="-635.5" y="160.0">model.BlogPostStatus</node>
+    <node x="252.0" y="420.5">model.GuestUser</node>
+    <node x="132.0" y="-15.5">model.Admin</node>
+    <node x="212.0" y="126.5">model.User</node>
+    <node x="-449.5" y="-83.0">model.Blog</node>
+    <node x="-455.0" y="140.0">model.BlogPost</node>
+    <node x="-443.5" y="385.0">model.Comment</node>
+    <node x="-641.0" y="-61.0">model.BlogTemplate</node>
+    <node x="172.0" y="55.5">model.Moderator</node>
+    <node x="533.5" y="79.0">model.Role</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="model.Moderator" target="model.User" relationship="GENERALIZATION">
+      <point x="0.0" y="15.5" />
+      <point x="-77.0" y="-127.0" />
+    </edge>
+    <edge source="model.User" target="model.GuestUser" relationship="GENERALIZATION">
+      <point x="36.0" y="127.0" />
+      <point x="0.0" y="-28.0" />
+    </edge>
+    <edge source="model.Admin" target="model.Moderator" relationship="GENERALIZATION">
+      <point x="0.0" y="15.5" />
+      <point x="-53.5" y="-15.5" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="false" x="131.0" y="195.5" />
+  <SelectedNodes>
+    <node>model.Role</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
